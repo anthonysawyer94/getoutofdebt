@@ -1,1 +1,26 @@
+# dbt ignore file
+dbt_packages/
+logs/
+dbt_modules/
+
+# Security and credentials
 profiles.yml
+target/
+.env
+*.pem
+
+# Data
+*.csv
+*.xlsx
+*.json
+*.parquet
+
+# OS and IDE files
+.DS_Store
+Thumbs.db
+venv/
+.vscode/
+.idea/
+.python-version
+__pycache__/
+*.log
