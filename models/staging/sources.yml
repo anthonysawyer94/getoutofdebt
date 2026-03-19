@@ -1,0 +1,356 @@
+version: 2
+
+sources:
+  - name: raw_home_credit
+    description: Home Credit Default Risk dataset from Kaggle
+    database: HOME_CREDIT_DEV
+    schema: PUBLIC
+    freshness:
+      warn_after: { count: 7, period: day }
+      error_after: { count: 30, period: day }
+
+    loaded_at_field: _loaded_at
+    meta:
+      dataset: home_credit_default_risk
+      kaggle_url: https://www.kaggle.com/competitions/home-credit-default-risk/data
+
+    tables:
+      - name: application_train
+        description: |
+          Main training data with TARGET. One row per loan application.
+          Contains demographic data, income, and loan details.
+        identifier: application_train
+        columns:
+          - name: SK_ID_CURR
+            description: ID of loan in sample
+            tests:
+              - unique
+              - not_null
+          - name: TARGET
+            description: Target variable (1 = loan default, 0 = non-default)
+            tests:
+              - not_null
+              - accepted_values:
+                  values: [0, 1]
+          - name: NAME_CONTRACT_TYPE
+            description: Cash or revolving loans
+          - name: CODE_GENDER
+            description: Gender of the client
+          - name: FLAG_OWN_CAR
+            description: Whether client owns a car
+          - name: FLAG_OWN_REALTY
+            description: Whether client owns house/apartment
+          - name: CNT_CHILDREN
+            description: Number of children
+          - name: AMT_INCOME_TOTAL
+            description: Income of the client
+          - name: AMT_CREDIT
+            description: Credit amount of the loan
+          - name: AMT_ANNUITY
+            description: Loan annuity
+          - name: AMT_GOODS_PRICE
+            description: Price of goods for which loan is given
+          - name: NAME_INCOME_TYPE
+            description: Client's income type
+          - name: NAME_EDUCATION_TYPE
+            description: Education level
+          - name: NAME_FAMILY_STATUS
+            description: Family status
+          - name: NAME_HOUSING_TYPE
+            description: Housing situation
+          - name: DAYS_BIRTH
+            description: Days from birth (negative = before application)
+          - name: DAYS_EMPLOYED
+            description: Days employed (negative = before, 365243 = unemployed)
+          - name: DAYS_REGISTRATION
+            description: Days since registration
+          - name: DAYS_ID_PUBLISH
+            description: Days since ID published
+          - name: FLAG_MOBIL
+            description: Did client provide mobile phone
+          - name: FLAG_EMP_PHONE
+            description: Did client provide work phone
+          - name: FLAG_WORK_PHONE
+            description: Did client provide home phone
+          - name: FLAG_CONT_MOBILE
+            description: Is mobile phone reachable
+          - name: FLAG_EMAIL
+            description: Did client provide email
+          - name: OCCUPATION_TYPE
+            description: Occupation type
+          - name: CNT_FAM_MEMBERS
+            description: Number of family members
+          - name: REGION_RATING_CLIENT
+            description: Region rating by Home Credit
+          - name: REGION_RATING_CLIENT_W_CITY
+            description: Region rating with city
+          - name: WEEKDAY_APPR_PROCESS_START
+            description: Day of week application was started
+          - name: HOUR_APPR_PROCESS_START
+            description: Hour of day application was started
+          - name: REG_REGION_NOT_LIVE_REGION
+            description: Flag if permanent address not match contact
+          - name: REG_REGION_NOT_WORK_REGION
+            description: Flag if permanent not match work region
+          - name: LIVE_REGION_NOT_WORK_REGION
+            description: Flag if contact not match work region
+          - name: REG_CITY_NOT_LIVE_CITY
+            description: Flag if permanent not match contact city
+          - name: REG_CITY_NOT_WORK_CITY
+            description: Flag if permanent not match work city
+          - name: LIVE_CITY_NOT_WORK_CITY
+            description: Flag if contact not match work city
+          - name: ORGANIZATION_TYPE
+            description: Type of organization
+          - name: EXT_SOURCE_1
+            description: External score 1 (normalized)
+          - name: EXT_SOURCE_2
+            description: External score 2 (normalized)
+          - name: EXT_SOURCE_3
+            description: External score 3 (normalized)
+          - name: EXT_SOURCE_SCORE
+            description: Average of external scores
+          - name: FLAG_DOCUMENT_2
+            description: Flag if document 2 provided
+          - name: FLAG_DOCUMENT_3
+            description: Flag if document 3 provided
+          - name: FLAG_DOCUMENT_4
+            description: Flag if document 4 provided
+          - name: FLAG_DOCUMENT_5
+            description: Flag if document 5 provided
+          - name: FLAG_DOCUMENT_6
+            description: Flag if document 6 provided
+          - name: FLAG_DOCUMENT_7
+            description: Flag if document 7 provided
+          - name: FLAG_DOCUMENT_8
+            description: Flag if document 8 provided
+          - name: FLAG_DOCUMENT_9
+            description: Flag if document 9 provided
+          - name: FLAG_DOCUMENT_10
+            description: Flag if document 10 provided
+          - name: FLAG_DOCUMENT_11
+            description: Flag if document 11 provided
+          - name: FLAG_DOCUMENT_12
+            description: Flag if document 12 provided
+          - name: FLAG_DOCUMENT_13
+            description: Flag if document 13 provided
+          - name: FLAG_DOCUMENT_14
+            description: Flag if document 14 provided
+          - name: FLAG_DOCUMENT_15
+            description: Flag if document 15 provided
+          - name: FLAG_DOCUMENT_16
+            description: Flag if document 16 provided
+          - name: FLAG_DOCUMENT_17
+            description: Flag if document 17 provided
+          - name: FLAG_DOCUMENT_18
+            description: Flag if document 18 provided
+          - name: FLAG_DOCUMENT_19
+            description: Flag if document 19 provided
+          - name: FLAG_DOCUMENT_20
+            description: Flag if document 20 provided
+          - name: FLAG_DOCUMENT_21
+            description: Flag if document 21 provided
+          - name: AMT_REQ_CREDIT_BUREAU_HOUR
+            description: Requests to credit bureau 1 hour before application
+          - name: AMT_REQ_CREDIT_BUREAU_DAY
+            description: Requests to credit bureau 1 day before
+          - name: AMT_REQ_CREDIT_BUREAU_WEEK
+            description: Requests to credit bureau 1 week before
+          - name: AMT_REQ_CREDIT_BUREAU_MON
+            description: Requests to credit bureau 1 month before
+          - name: AMT_REQ_CREDIT_BUREAU_QRT
+            description: Requests to credit bureau 3 months before
+          - name: AMT_REQ_CREDIT_BUREAU_YEAR
+            description: Requests to credit bureau 1 year before
+
+      - name: bureau
+        description: |
+          All client's previous credits from other institutions reported to Credit Bureau.
+          One row per previous credit. Clients can have multiple previous credits.
+        identifier: bureau
+        columns:
+          - name: SK_ID_CURR
+            description: ID of loan in our sample (links to application)
+            tests:
+              - not_null
+          - name: SK_ID_BUREAU
+            description: ID of previous Credit Bureau credit
+            tests:
+              - unique
+              - not_null
+          - name: CREDIT_ACTIVE
+            description: Status of the Credit Bureau credits (Active/Closed/Bad Debt/Sold)
+          - name: CREDIT_CURRENCY
+            description: Currency of the Credit Bureau credit
+          - name: DAYS_CREDIT
+            description: How many days before application was credit reported
+          - name: CREDIT_DAY_OVERDUE
+            description: Days overdue for CB credit
+          - name: DAYS_CREDIT_ENDDATE
+            description: Remaining duration of CB credit
+          - name: DAYS_ENDDATE_FACT
+            description: Days since CB credit ended (for closed)
+          - name: AMT_CREDIT_MAX_OVERDUE
+            description: Max overdue amount
+          - name: CNT_CREDIT_PROLONG
+            description: Number of times credit prolonged
+          - name: AMT_CREDIT_SUM
+            description: Current credit amount
+          - name: AMT_CREDIT_SUM_DEBT
+            description: Current debt amount
+          - name: AMT_CREDIT_SUM_LIMIT
+            description: Credit card limit
+          - name: AMT_CREDIT_SUM_OVERDUE
+            description: Current overdue amount
+          - name: CREDIT_TYPE
+            description: Type of Credit Bureau credit
+          - name: DAYS_CREDIT_UPDATE
+            description: Days since last update from CB
+          - name: AMT_ANNUITY
+            description: Annuity of CB credit
+
+      - name: previous_application
+        description: |
+          All previous applications for Home Credit loans.
+          One row per previous application. May have multiple per SK_ID_CURR.
+        identifier: previous_application
+        columns:
+          - name: SK_ID_PREV
+            description: ID of previous application
+            tests:
+              - unique
+              - not_null
+          - name: SK_ID_CURR
+            description: ID of current application (links to application)
+            tests:
+              - not_null
+          - name: NAME_CONTRACT_TYPE
+            description: Contract type of previous application
+          - name: AMT_ANNUITY
+            description: Annuity of previous application
+          - name: AMT_APPLICATION
+            description: Amount requested
+          - name: AMT_CREDIT
+            description: Credit amount approved
+          - name: AMT_DOWN_PAYMENT
+            description: Down payment
+          - name: AMT_GOODS_PRICE
+            description: Goods price
+          - name: WEEKDAY_APPR_PROCESS_START
+            description: Day of week of application
+          - name: HOUR_APPR_PROCESS_START
+            description: Hour of application
+          - name: FLAG_LAST_APPL_PER_CONTRACT
+            description: Flag if last application for contract
+          - name: NFLAG_LAST_APPL_IN_DAY
+            description: Flag if last application in day
+          - name: RATE_DOWN_PAYMENT
+            description: Down payment rate
+          - name: RATE_INTEREST_PRIMARY
+            description: Interest rate primary
+          - name: RATE_INTEREST_PRIVILEGED
+            description: Interest rate privileged
+          - name: NAME_CASH_LOAN_PURPOSE
+            description: Purpose of cash loan
+          - name: NAME_CONTRACT_STATUS
+            description: Contract status (Approved/Refused/Canceled/Unused)
+          - name: DAYS_DECISION
+            description: Days since decision
+          - name: NAME_TYPE_SUITE
+            description: Who accompanied client
+          - name: NAME_CLIENT_TYPE
+            description: Client type (New/Refresh/Repeater/Worker)
+          - name: NAME_GOODS_CATEGORY
+            description: Goods category
+          - name: NAME_PORTFOLIO
+            description: Portfolio (POS/Cash/Annuity/XNA)
+          - name: NAME_PRODUCT_TYPE
+            description: Product type (x-sell/walk-in)
+          - name: SELLERPLACE_AREA
+            description: Seller place area
+          - name: NAME_SELLER_INDUSTRY
+            description: Seller industry
+          - name: CNT_PAYMENT
+            description: Term of previous credit
+          - name: NAME_YIELD_GROUP
+            description: Yield group
+          - name: PRODUCT_COMBINATION
+            description: Product combination
+          - name: DAYS_FIRST_DRAWING
+            description: Days from first drawing
+          - name: DAYS_FIRST_DUE
+            description: Days from first due
+          - name: DAYS_LAST_DUE_1ST_VERSION
+            description: Days from last due (first version)
+          - name: DAYS_LAST_DUE
+            description: Days from last due
+          - name: DAYS_TERMINATION
+            description: Days from termination
+          - name: NFLAG_INSURED_ON_APPROVAL
+            description: Flag if insurance requested
+
+      - name: credit_card_balance
+        description: Monthly balance data for credit cards
+        identifier: credit_card_balance
+        columns:
+          - name: SK_ID_PREV
+            description: ID of previous application
+          - name: SK_ID_CURR
+            description: ID of current application
+          - name: MONTHS_BALANCE
+            description: Month of balance relative to application date
+          - name: AMT_BALANCE
+            description: Balance amount
+          - name: AMT_CREDIT_LIMIT_ACTUAL
+            description: Credit card limit
+          - name: AMT_DRAWINGS_ATM_CURRENT
+            description: ATM drawdowns
+          - name: AMT_DRAWINGS_CURRENT
+            description: Current drawdowns
+          - name: AMT_DRAWINGS_OTHER_CURRENT
+            description: Other drawdowns
+          - name: AMT_DRAWINGS_POS_CURRENT
+            description: POS drawdowns
+          - name: AMT_INST_MIN_REGULARITY
+            description: Minimum installment
+          - name: AMT_PAYMENT_CURRENT
+            description: Current payment
+          - name: AMT_PAYMENT_TOTAL_CURRENT
+            description: Total current payment
+          - name: AMT_RECEIVABLE_PRINCIPAL
+            description: Principal receivable
+          - name: AMT_RECIVABLE
+            description: Total receivable
+          - name: AMT_TOTAL_RECEIVABLE
+            description: Total receivable
+          - name: CNT_DRAWINGS_ATM_CURRENT
+            description: Number of ATM drawings
+          - name: CNT_DRAWINGS_CURRENT
+            description: Number of drawings
+          - name: CNT_DRAWINGS_OTHER_CURRENT
+            description: Number of other drawings
+          - name: CNT_DRAWINGS_POS_CURRENT
+            description: Number of POS drawings
+          - name: CNT_INSTALMENT_MATURE_CUM
+            description: Number of installments paid
+          - name: NAME_CONTRACT_STATUS
+            description: Contract status
+          - name: SK_DPD
+            description: Days past due
+          - name: SK_DPD_DEF
+            description: Days past due with tolerance
+
+  - name: kaggle_metadata
+    description: Metadata about the Kaggle dataset
+    schema: meta
+    tables:
+      - name: dataset_info
+        description: Information about the source dataset
+        columns:
+          - name: dataset_name
+            tests:
+              - unique
+          - name: source_url
+          - name: rows_count
+          - name: columns_count
+          - name: download_date
