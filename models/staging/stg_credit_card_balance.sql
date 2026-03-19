@@ -41,25 +41,6 @@ SELECT
     SK_DPD::INT AS days_past_due,
     SK_DPD_DEF::INT AS days_past_due_tolerance,
 
-    -- Derived metrics
-    CASE
-        WHEN AMT_CREDIT_LIMIT_ACTUAL > 0
-        THEN AMT_BALANCE / AMT_CREDIT_LIMIT_ACTUAL
-        ELSE NULL
-    END AS utilization_ratio,
-
-    CASE
-        WHEN AMT_INST_MIN_REGULARITY > 0 AND AMT_PAYMENT_CURRENT > 0
-        THEN AMT_PAYMENT_CURRENT / AMT_INST_MIN_REGULARITY
-        ELSE NULL
-    END AS payment_to_min_ratio,
-
-    CASE
-        WHEN AMT_CREDIT_LIMIT_ACTUAL > 0 AND AMT_DRAWINGS_CURRENT > 0
-        THEN AMT_DRAWINGS_CURRENT / AMT_CREDIT_LIMIT_ACTUAL
-        ELSE NULL
-    END AS drawing_to_limit_ratio,
-
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS stg_processed_at
 
 FROM source_data

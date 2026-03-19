@@ -75,6 +75,6 @@ SELECT
         ELSE NULL
     END AS down_payment_rate_goods,
 
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS stg_processed_at
 
 FROM source_data

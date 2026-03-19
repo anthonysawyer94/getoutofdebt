@@ -14,9 +14,9 @@ SELECT
     CREDIT_TYPE::VARCHAR AS credit_type,
 
     -- Duration and timing
-    DAYS_CREDIT::INT AS days_since_credit,
+    ABS(DAYS_CREDIT::INT) AS days_since_credit,
     DAYS_CREDIT_ENDDATE::INT AS days_until_credit_end,
-    DAYS_ENDDATE_FACT::INT AS days_since_credit_closed,
+    ABS(DAYS_ENDDATE_FACT::INT) AS days_since_credit_closed,
     DAYS_CREDIT_UPDATE::INT AS days_since_credit_update,
 
     -- Overdue metrics
@@ -31,23 +31,6 @@ SELECT
     AMT_CREDIT_SUM_OVERDUE::FLOAT AS overdue_amount,
     AMT_ANNUITY::FLOAT AS annuity,
 
-    -- Derived metrics
-    CASE
-        WHEN AMT_CREDIT_SUM > 0 THEN AMT_CREDIT_SUM_DEBT / AMT_CREDIT_SUM
-        ELSE NULL
-    END AS debt_to_credit_ratio,
-
-    CASE
-        WHEN AMT_CREDIT_SUM > 0 THEN AMT_CREDIT_SUM_OVERDUE / AMT_CREDIT_SUM
-        ELSE NULL
-    END AS overdue_to_credit_ratio,
-
-    CASE
-        WHEN AMT_ANNUITY > 0 AND AMT_CREDIT_SUM > 0
-        THEN AMT_CANNUITY / AMT_CREDIT_SUM
-        ELSE NULL
-    END AS annuity_to_credit_ratio,
-
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS stg_processed_at
 
 FROM source_data

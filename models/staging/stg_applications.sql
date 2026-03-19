@@ -34,8 +34,9 @@ SELECT
     -- Housing
     NAME_HOUSING_TYPE::VARCHAR AS housing_type,
 
-    -- Age and employment (convert negative days to positive)
+    -- Age and employment- Standardizing time units and handling 'magic number' nulls
     ABS(DAYS_BIRTH::INT) / 365.25 AS age_years,
+    -- Handles the 'unknown' outlier
     CASE
         WHEN DAYS_EMPLOYED = 365243 THEN NULL
         ELSE ABS(DAYS_EMPLOYED::INT) / 365.25
@@ -54,7 +55,7 @@ SELECT
 
     -- Occupation
     OCCUPATION_TYPE::VARCHAR AS occupation_type,
-
+    
     -- Region ratings
     REGION_RATING_CLIENT::INT AS region_rating,
     REGION_RATING_CLIENT_W_CITY::INT AS region_rating_with_city,
@@ -70,7 +71,7 @@ SELECT
     -- Organization
     ORGANIZATION_TYPE::VARCHAR AS organization_type,
 
-    -- External scores
+        -- External scores
     TRY_TO_FLOAT(EXT_SOURCE_1) AS ext_source_1,
     TRY_TO_FLOAT(EXT_SOURCE_2) AS ext_source_2,
     TRY_TO_FLOAT(EXT_SOURCE_3) AS ext_source_3,
@@ -98,28 +99,6 @@ SELECT
     FLAG_DOCUMENT_6::BOOLEAN AS doc_6_provided,
     FLAG_DOCUMENT_8::BOOLEAN AS doc_8_provided,
 
-    -- Derived features
-    CASE
-        WHEN AMT_CREDIT > 0 THEN AMT_ANNUITY / AMT_CREDIT
-        ELSE NULL
-    END AS annuity_to_credit_ratio,
-
-    CASE
-        WHEN AMT_INCOME_TOTAL > 0 THEN AMT_CREDIT / AMT_INCOME_TOTAL
-        ELSE NULL
-    END AS credit_to_income_ratio,
-
-    CASE
-        WHEN AMT_GOODS_PRICE > 0 THEN AMT_CREDIT / AMT_GOODS_PRICE
-        ELSE NULL
-    END AS credit_to_goods_ratio,
-
-    CASE
-        WHEN AMT_ANNUITY > 0 AND AMT_INCOME_TOTAL > 0
-        THEN (AMT_ANNUITY * 12) / AMT_INCOME_TOTAL
-        ELSE NULL
-    END AS annuity_to_income_ratio,
-
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS stg_processed_at
 
 FROM source_data

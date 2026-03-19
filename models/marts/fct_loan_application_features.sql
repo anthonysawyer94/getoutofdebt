@@ -93,7 +93,7 @@ combined AS (
         COALESCE(cc.overdue_rate, 0) AS cc_overdue_rate,
         COALESCE(cc.max_days_past_due, 0) AS cc_max_dpd,
 
-        CURRENT_TIMESTAMP() AS dbt_processed_at
+        CURRENT_TIMESTAMP() AS fct_created_at
 
     FROM application app
     LEFT JOIN bureau_agg bureau ON app.user_id = bureau.user_id

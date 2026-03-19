@@ -13,3 +13,4 @@
 {% macro rank_within_group(column, partition_by, order_by='DESC') %}
     RANK() OVER (PARTITION BY {{ partition_by }} ORDER BY {{ column }} {{ order_by }})
 {% endmacro %}
+

@@ -93,6 +93,6 @@ SELECT
         ELSE NULL
     END AS income_burden_ratio,
 
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS fct_created_at
 
 FROM application_features
