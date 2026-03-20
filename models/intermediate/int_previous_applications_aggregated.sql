@@ -1,5 +1,3 @@
-{{ config(materialized = 'view') }}
-
 WITH prev_app_staging AS (
     SELECT * FROM {{ ref('stg_previous_applications') }}
 )

@@ -1,5 +1,3 @@
-{{ config(materialized = 'view') }}
-
 WITH cc_staging AS (
     SELECT * FROM {{ ref('int_credit_card_metrics') }}
 )

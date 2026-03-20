@@ -1,5 +1,3 @@
-{{ config(materialized = 'table') }}
-
 WITH application AS (
     SELECT * FROM {{ ref('int_application_metrics') }}
 ),

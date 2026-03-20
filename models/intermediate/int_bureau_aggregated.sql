@@ -1,5 +1,3 @@
-{{ config(materialized = 'view') }}
-
 WITH bureau_metrics AS (
     SELECT * FROM {{ ref('int_bureau_metrics') }}
 )

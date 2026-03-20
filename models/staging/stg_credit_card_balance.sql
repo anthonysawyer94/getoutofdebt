@@ -1,5 +1,3 @@
-{{ config(materialized = 'view') }}
-
 WITH source_data AS (
     SELECT * FROM {{ source('raw_home_credit', 'credit_card_balance') }}
 )

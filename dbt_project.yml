@@ -2,6 +2,10 @@ name: "home_credit_risk"
 version: "1.0.0"
 config-version: 2
 
+description: >
+  This project transforms raw Kaggle Home Credit data into a 
+  risk assessment suite using an L1/L2/L3 architecture in Snowflake.
+
 profile: "home_credit_risk"
 
 model-paths: ["models"]
@@ -10,24 +14,21 @@ test-paths: ["tests"]
 macro-paths: ["macros"]
 
 target-path: "target"
-clean-targets: ["target", "dbt_packages"]
-
-vars:
-  materialized: table
-  staging_materialized: view
-  application_schema: raw_data
-  bureau_schema: raw_data
+clean-targets: ["target", "dbt_packages", "logs"]
 
 models:
   home_credit_risk:
     staging:
       +schema: L2_PROCESSING # Exact name for Snowflake
       +materialized: view
+      description: "Raw data transformations and basic cleaning. Materialized as views for flexibility."
 
     intermediate:
       +schema: L2_PROCESSING # Exact name for Snowflake
       +materialized: view
+      description: "Intermediate transformations and aggregations. Materialized as views for flexibility."
 
     marts:
       +schema: L3_CONSUMPTION # Exact name for Snowflake
       +materialized: table
+      description: "Final feature tables for modeling and analysis. Materialized as tables for performance."

@@ -1,5 +1,3 @@
-{{ config(materialized = 'table') }}
-
 WITH application_features AS (
     SELECT * FROM {{ ref('fct_loan_application_features') }}
 )

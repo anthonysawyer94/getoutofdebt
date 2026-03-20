@@ -1,0 +1,94 @@
+version: 2
+
+macros:
+  - name: generate_schema_name
+    description: |
+      Generates the schema name for a model. Uses custom_schema_name if provided,
+      otherwise falls back to target.schema. Handles whitespace trimming.
+    arguments:
+      - name: custom_schema_name
+        type: string
+        description: Optional custom schema name override
+      - name: node
+        type: node
+        description: The dbt node being materialized (not currently used)
+
+  - name: weighted_avg
+    description: |
+      Calculates weighted average of a column. Useful for aggregating metrics 
+      where different records have different weights (e.g., pageviews weighted by session duration).
+    arguments:
+      - name: column
+        type: string
+        description: The column to average
+      - name: weight
+        type: string
+        description: The weight column
+      - name: table
+        type: string
+        description: Optional table alias (currently not used)
+    example: |
+      Usage:
+      {{ weighted_avg('revenue', 'units_sold') }}
+      
+      Produces: SUM(revenue * units_sold) / NULLIF(SUM(units_sold), 0)
+
+  - name: date_diff
+    description: |
+      Calculates the difference between two dates in specified units.
+      Wrapper around Snowflake's DATEDIFF function for consistent date arithmetic.
+    arguments:
+      - name: start_date
+        type: string
+        description: Start date (column or literal)
+      - name: end_date
+        type: string
+        description: End date (column or literal)
+      - name: date_part
+        type: string
+        description: Date part to extract (default: 'day'). Options: day, week, month, year, etc.
+    example: |
+      Usage:
+      {{ date_diff('created_at', 'updated_at', 'day') }}
+      {{ date_diff('order_date', 'ship_date', 'week') }}
+      
+      Produces: DATEDIFF('day', created_at, updated_at)
+
+  - name: percent_of_total
+    description: |
+      Calculates the percentage of a column relative to its group total.
+      Uses a window function to compute without needing a subquery.
+    arguments:
+      - name: column
+        type: string
+        description: The numeric column to calculate percentage for
+      - name: group_by_column
+        type: string
+        description: The column to partition by for the total
+    example: |
+      Usage:
+      {{ percent_of_total('revenue', 'region') }}
+      
+      Produces: revenue / SUM(revenue) OVER (PARTITION BY region)
+      Result: Each row shows its revenue as a fraction of total revenue within that region
+
+  - name: rank_within_group
+    description: |
+      Ranks records within a partition. Useful for finding top/bottom N records
+      within groups (e.g., top-selling products per category).
+    arguments:
+      - name: column
+        type: string
+        description: The column to rank by
+      - name: partition_by
+        type: string
+        description: The column to partition (group) by
+      - name: order_by
+        type: string
+        description: Sort order - 'DESC' for highest first (default), 'ASC' for lowest first
+    example: |
+      Usage:
+      {{ rank_within_group('sales', 'department') }}
+      {{ rank_within_group('score', 'team', 'ASC') }}
+      
+      Produces: RANK() OVER (PARTITION BY department ORDER BY sales DESC)

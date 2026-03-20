@@ -1,5 +1,3 @@
-{{ config(materialized = 'view') }}
-
 WITH stg_credit_card AS (
     SELECT * FROM {{ ref('stg_credit_card_balance') }}
 )
