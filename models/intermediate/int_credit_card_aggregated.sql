@@ -1,7 +1,7 @@
 {{ config(materialized = 'view') }}
 
 WITH cc_staging AS (
-    SELECT * FROM {{ ref('stg_credit_card_balance') }}
+    SELECT * FROM {{ ref('int_credit_card_metrics') }}
 )
 
 SELECT
@@ -60,7 +60,7 @@ SELECT
     AVG(total_receivable) AS avg_receivable,
     SUM(total_receivable) AS total_receivable,
 
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS int_credit_card_aggregated_at
 
 FROM cc_staging
 GROUP BY user_id

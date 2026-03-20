@@ -3,8 +3,8 @@ version: 2
 sources:
   - name: raw_home_credit
     description: Home Credit Default Risk dataset from Kaggle
-    database: HOME_CREDIT_DEV
-    schema: PUBLIC
+    database: HOME_CREDIT
+    schema: L1_LANDING
     freshness:
       warn_after: { count: 7, period: day }
       error_after: { count: 30, period: day }

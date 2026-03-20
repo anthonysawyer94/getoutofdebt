@@ -1,5 +1,6 @@
+{{ config(materialized = 'view') }}
+
 WITH stg_credit_card AS (
-    -- This pulls from your Staging file
     SELECT * FROM {{ ref('stg_credit_card_balance') }}
 )
 
@@ -8,24 +9,24 @@ SELECT
 
     -- Using CASE to prevent division by zero
     CASE
-        WHEN AMT_CREDIT_LIMIT_ACTUAL > 0
-        THEN AMT_BALANCE / AMT_CREDIT_LIMIT_ACTUAL
+        WHEN credit_limit > 0
+        THEN balance / credit_limit
         ELSE NULL
     END AS utilization_ratio,
 
     CASE
-        WHEN AMT_INST_MIN_REGULARITY > 0 AND AMT_PAYMENT_CURRENT > 0
-        THEN AMT_PAYMENT_CURRENT / AMT_INST_MIN_REGULARITY
+        WHEN min_installment > 0 AND current_payment > 0
+        THEN current_payment / min_installment
         ELSE NULL
     END AS payment_to_min_ratio,
 
     CASE
-        WHEN AMT_CREDIT_LIMIT_ACTUAL > 0 AND AMT_DRAWINGS_CURRENT > 0
-        THEN AMT_DRAWINGS_CURRENT / AMT_CREDIT_LIMIT_ACTUAL
+        WHEN credit_limit > 0 AND total_drawings > 0
+        THEN total_drawings / credit_limit
         ELSE NULL
     END AS drawing_to_limit_ratio,
 
     -- Metadata
-    CURRENT_TIMESTAMP() AS stg_processed_at
+    CURRENT_TIMESTAMP() AS int_credit_card_calculated_at
     
 FROM stg_credit_card

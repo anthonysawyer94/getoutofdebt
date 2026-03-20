@@ -71,16 +71,10 @@ SELECT
     -- Organization
     ORGANIZATION_TYPE::VARCHAR AS organization_type,
 
-        -- External scores
-    TRY_TO_FLOAT(EXT_SOURCE_1) AS ext_source_1,
-    TRY_TO_FLOAT(EXT_SOURCE_2) AS ext_source_2,
-    TRY_TO_FLOAT(EXT_SOURCE_3) AS ext_source_3,
-    COALESCE(
-        (TRY_TO_FLOAT(EXT_SOURCE_1) + TRY_TO_FLOAT(EXT_SOURCE_2) + TRY_TO_FLOAT(EXT_SOURCE_3)) / 3,
-        TRY_TO_FLOAT(EXT_SOURCE_1),
-        TRY_TO_FLOAT(EXT_SOURCE_2),
-        TRY_TO_FLOAT(EXT_SOURCE_3)
-    ) AS ext_source_avg,
+    -- External scores
+    TRY_CAST(EXT_SOURCE_1 AS FLOAT) AS ext_source_1,
+    TRY_CAST(EXT_SOURCE_2 AS FLOAT) AS ext_source_2,
+    TRY_CAST(EXT_SOURCE_3 AS FLOAT) AS ext_source_3,
 
     -- Application timing
     WEEKDAY_APPR_PROCESS_START::VARCHAR AS application_weekday,

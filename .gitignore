@@ -8,12 +8,14 @@ profiles.yml
 target/
 .env
 *.pem
+.user.yml
 
 # Data
 *.csv
 *.xlsx
 *.json
 *.parquet
+data/
 
 # OS and IDE files
 .DS_Store
@@ -24,3 +26,4 @@ venv/
 .python-version
 __pycache__/
 *.log
+dbt_internal_packages/

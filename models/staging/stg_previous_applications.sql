@@ -26,8 +26,8 @@ SELECT
 
     -- Rates
     RATE_DOWN_PAYMENT::FLOAT AS down_payment_rate,
-    TRY_TO_FLOAT(RATE_INTEREST_PRIMARY) AS interest_rate_primary,
-    TRY_TO_FLOAT(RATE_INTEREST_PRIVILEGED) AS interest_rate_privileged,
+    TRY_CAST(RATE_INTEREST_PRIMARY AS FLOAT) AS interest_rate_primary,
+    TRY_CAST(RATE_INTEREST_PRIVILEGED AS FLOAT) AS interest_rate_privileged,
 
     -- Purpose
     NAME_CASH_LOAN_PURPOSE::VARCHAR AS loan_purpose,

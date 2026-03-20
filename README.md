@@ -10,11 +10,11 @@ Data is sourced from the [Home Credit Default Risk](https://www.kaggle.com/compe
 
 ### Medallion Structure
 
-| Layer | Models | Description |
-|-------|--------|-------------|
+| Layer      | Models  | Description                |
+| ---------- | ------- | -------------------------- |
 | **Bronze** | `stg_*` | Raw data typed and cleaned |
-| **Silver** | `int_*` | Aggregated features |
-| **Gold** | `fct_*` | Analytics-ready tables |
+| **Silver** | `int_*` | Aggregated features        |
+| **Gold**   | `fct_*` | Analytics-ready tables     |
 
 ### Data Model
 
@@ -38,31 +38,25 @@ Data is sourced from the [Home Credit Default Risk](https://www.kaggle.com/compe
 
 ### Prerequisites
 
-- Python 3.8+
+- Python 3.8.x <= & => 3.14.x (dbt doesn't work with 3.14 yet)
 - dbt (with Snowflake adapter)
-- Snowflake account
+- Snowflake account (can sign up for a free account)
 
 ### Setup
 
 1. **Install dependencies**
+
    ```bash
-   pip install dbt-snowflake dbt-labs/dbt_utils dbt-labs/codegen
+   pip install dbt-snowflake
    ```
 
-2. **Configure connections**
-   ```bash
-   # Set environment variables
-   export SNOWFLAKE_ACCOUNT=your_account
-   export SNOWFLAKE_USER=your_user
-   export SNOWFLAKE_PASSWORD=your_password
-   ```
+2. **Install dbt packages**
 
-3. **Install dbt packages**
    ```bash
    dbt deps
    ```
 
-4. **Load data to Snowflake**
+3. **Load data to Snowflake**
    - Download CSVs from Kaggle
    - Upload to Snowflake via SnowSQL or Snowflake UI
    - Create tables matching the schema
@@ -93,27 +87,27 @@ dbt test --store-failures
 
 ### Staging (Bronze)
 
-| Model | Source Table | Description |
-|-------|--------------|-------------|
-| `stg_applications` | `application_train` | Main loan applications |
-| `stg_bureau` | `bureau` | Credit bureau records |
+| Model                       | Source Table           | Description             |
+| --------------------------- | ---------------------- | ----------------------- |
+| `stg_applications`          | `application_train`    | Main loan applications  |
+| `stg_bureau`                | `bureau`               | Credit bureau records   |
 | `stg_previous_applications` | `previous_application` | Prior Home Credit loans |
-| `stg_credit_card_balance` | `credit_card_balance` | Credit card balances |
+| `stg_credit_card_balance`   | `credit_card_balance`  | Credit card balances    |
 
 ### Intermediate (Silver)
 
-| Model | Description |
-|-------|-------------|
-| `int_bureau_aggregated` | Bureau credit aggregates per user |
-| `int_previous_applications_aggregated` | Previous application stats |
-| `int_credit_card_aggregated` | Credit card usage patterns |
+| Model                                  | Description                       |
+| -------------------------------------- | --------------------------------- |
+| `int_bureau_aggregated`                | Bureau credit aggregates per user |
+| `int_previous_applications_aggregated` | Previous application stats        |
+| `int_credit_card_aggregated`           | Credit card usage patterns        |
 
 ### Marts (Gold)
 
-| Model | Description |
-|-------|-------------|
-| `fct_loan_application_features` | Complete feature set |
-| `fct_loan_risk_assessment` | Risk scoring and classification |
+| Model                           | Description                     |
+| ------------------------------- | ------------------------------- |
+| `fct_loan_application_features` | Complete feature set            |
+| `fct_loan_risk_assessment`      | Risk scoring and classification |
 
 ## Key Features
 
@@ -149,12 +143,12 @@ dbt docs serve
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `SNOWFLAKE_ACCOUNT` | Yes | Snowflake account identifier |
-| `SNOWFLAKE_USER` | Yes | Snowflake username |
-| `SNOWFLAKE_PASSWORD` | Yes | Snowflake password |
-| `SNOWFLAKE_ROLE` | No | Role to use (default: ANALYST) |
+| Variable             | Required | Description                    |
+| -------------------- | -------- | ------------------------------ |
+| `SNOWFLAKE_ACCOUNT`  | Yes      | Snowflake account identifier   |
+| `SNOWFLAKE_USER`     | Yes      | Snowflake username             |
+| `SNOWFLAKE_PASSWORD` | Yes      | Snowflake password             |
+| `SNOWFLAKE_ROLE`     | No       | Role to use (default: ANALYST) |
 
 ## Project Structure
 

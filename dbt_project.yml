@@ -1,19 +1,33 @@
-name: 'home_credit_risk'
-version: '1.0.0'
+name: "home_credit_risk"
+version: "1.0.0"
 config-version: 2
 
-profile: 'home_credit_risk'
+profile: "home_credit_risk"
 
-model-paths: ['models']
-seed-paths: ['seeds']
-test-paths: ['tests']
-macro-paths: ['macros']
+model-paths: ["models"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
 
-target-path: 'target'
-clean-targets: ['target', 'dbt_packages']
+target-path: "target"
+clean-targets: ["target", "dbt_packages"]
 
 vars:
   materialized: table
   staging_materialized: view
   application_schema: raw_data
   bureau_schema: raw_data
+
+models:
+  home_credit_risk:
+    staging:
+      +schema: L2_PROCESSING # Exact name for Snowflake
+      +materialized: view
+
+    intermediate:
+      +schema: L2_PROCESSING # Exact name for Snowflake
+      +materialized: view
+
+    marts:
+      +schema: L3_CONSUMPTION # Exact name for Snowflake
+      +materialized: table

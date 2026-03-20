@@ -1,7 +1,7 @@
 {{ config(materialized = 'table') }}
 
 WITH application AS (
-    SELECT * FROM {{ ref('stg_applications') }}
+    SELECT * FROM {{ ref('int_application_metrics') }}
 ),
 
 bureau_agg AS (

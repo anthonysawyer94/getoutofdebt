@@ -66,7 +66,7 @@ SELECT
     MIN(days_since_decision) AS earliest_decision_days,
     MAX(days_since_decision) AS latest_decision_days,
 
-    CURRENT_TIMESTAMP() AS dbt_processed_at
+    CURRENT_TIMESTAMP() AS int_previous_applications_aggregated_at
 
 FROM prev_app_staging
 GROUP BY user_id
