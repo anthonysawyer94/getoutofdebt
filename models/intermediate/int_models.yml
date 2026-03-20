@@ -1,0 +1,404 @@
+version: 2
+
+models:
+  - name: int_application_metrics
+    description: Application data with derived financial ratio features. Extends stg_applications with calculated metrics.
+    columns:
+      - name: user_id
+        description: ID of loan in sample
+      - name: target
+        description: Target variable (1 = loan default, 0 = non-default)
+      - name: contract_type
+        description: Cash or revolving loans
+      - name: gender
+        description: Gender of the client
+      - name: owns_car
+        description: Whether client owns a car
+      - name: owns_realty
+        description: Whether client owns house/apartment
+      - name: num_children
+        description: Number of children
+      - name: num_family_members
+        description: Number of family members
+      - name: annual_income
+        description: Income of the client
+      - name: credit_amount
+        description: Credit amount of the loan
+      - name: loan_annuity
+        description: Loan annuity
+      - name: goods_price
+        description: Price of goods for which loan is given
+      - name: income_type
+        description: Client's income type
+      - name: education_type
+        description: Education level
+      - name: family_status
+        description: Family status
+      - name: housing_type
+        description: Housing situation
+      - name: age_years
+        description: Calculated age in years
+      - name: years_employed
+        description: Calculated years employed (NULL for unemployed)
+      - name: days_since_registration
+        description: Days since registration
+      - name: days_since_id_publish
+        description: Days since ID published
+      - name: has_mobile
+        description: Did client provide mobile phone
+      - name: has_work_phone
+        description: Did client provide work phone
+      - name: has_home_phone
+        description: Did client provide home phone
+      - name: mobile_reachable
+        description: Is mobile phone reachable
+      - name: has_email
+        description: Did client provide email
+      - name: occupation_type
+        description: Occupation type
+      - name: region_rating
+        description: Region rating by Home Credit
+      - name: region_rating_with_city
+        description: Region rating with city
+      - name: region_live_mismatch
+        description: Flag if permanent address not match contact
+      - name: region_work_mismatch
+        description: Flag if permanent not match work region
+      - name: live_work_mismatch
+        description: Flag if contact not match work region
+      - name: city_live_mismatch
+        description: Flag if permanent not match contact city
+      - name: city_work_mismatch
+        description: Flag if permanent not match work city
+      - name: city_work_live_mismatch
+        description: Flag if contact not match work city
+      - name: organization_type
+        description: Type of organization
+      - name: ext_source_1
+        description: External score 1 (normalized, 0-1)
+      - name: ext_source_2
+        description: External score 2 (normalized, 0-1)
+      - name: ext_source_3
+        description: External score 3 (normalized, 0-1)
+      - name: ext_source_avg
+        description: Average of external scores
+      - name: application_weekday
+        description: Day of week application was started
+      - name: application_hour
+        description: Hour of day application was started
+      - name: bureau_inquiries_hour
+        description: Requests to credit bureau 1 hour before
+      - name: bureau_inquiries_day
+        description: Requests to credit bureau 1 day before
+      - name: bureau_inquiries_week
+        description: Requests to credit bureau 1 week before
+      - name: bureau_inquiries_month
+        description: Requests to credit bureau 1 month before
+      - name: bureau_inquiries_quarter
+        description: Requests to credit bureau 3 months before
+      - name: bureau_inquiries_year
+        description: Requests to credit bureau 1 year before
+      - name: doc_3_provided
+        description: Flag if document 3 provided
+      - name: doc_6_provided
+        description: Flag if document 6 provided
+      - name: doc_8_provided
+        description: Flag if document 8 provided
+      - name: stg_processed_at
+        description: Processing timestamp
+      - name: annuity_to_credit_ratio
+        description: loan_annuity / credit_amount
+      - name: credit_to_income_ratio
+        description: credit_amount / annual_income
+      - name: credit_to_goods_ratio
+        description: credit_amount / goods_price
+      - name: annuity_to_income_ratio
+        description: (loan_annuity * 12) / annual_income
+      - name: int_app_calculated_at
+        description: Processing timestamp
+
+  - name: int_previous_applications_aggregated
+    description: Aggregated statistics of previous Home Credit applications per user. One row per user_id with counts and averages.
+    columns:
+      - name: user_id
+        description: User ID (group key)
+      - name: total_previous_applications
+        description: Count of all previous applications
+      - name: unique_applications
+        description: Count of distinct prev_application_id
+      - name: approved_count
+        description: Count of approved applications
+      - name: refused_count
+        description: Count of refused applications
+      - name: canceled_count
+        description: Count of canceled applications
+      - name: unused_count
+        description: Count of unused applications
+      - name: approval_rate
+        description: approved_count / total_previous_applications
+      - name: avg_requested_amount
+        description: Average amount requested
+      - name: max_requested_amount
+        description: Maximum amount requested
+      - name: total_approved_credit
+        description: Sum of approved credit amounts
+      - name: avg_approved_credit
+        description: Average approved credit amount
+      - name: avg_interest_rate_primary
+        description: Average primary interest rate
+      - name: avg_interest_rate_privileged
+        description: Average privileged interest rate
+      - name: avg_down_payment
+        description: Average down payment
+      - name: avg_down_payment_rate
+        description: Average down payment rate
+      - name: avg_term_months
+        description: Average term in months
+      - name: max_term_months
+        description: Maximum term in months
+      - name: min_term_months
+        description: Minimum term in months
+      - name: avg_annuity
+        description: Average annuity
+      - name: total_annuity
+        description: Sum of annuities
+      - name: repeater_count
+        description: Count of Repeater client types
+      - name: new_client_count
+        description: Count of New client types
+      - name: refreshed_count
+        description: Count of Refreshed client types
+      - name: num_contract_types
+        description: Number of distinct contract types
+      - name: num_portfolios
+        description: Number of distinct portfolios
+      - name: insurance_requests
+        description: Sum of insurance requests
+      - name: avg_days_since_decision
+        description: Average days since decision
+      - name: earliest_decision_days
+        description: Minimum days since decision (most recent)
+      - name: latest_decision_days
+        description: Maximum days since decision (oldest)
+      - name: int_previous_applications_aggregated_at
+        description: Processing timestamp
+
+  - name: int_credit_card_metrics
+    description: Credit card balance data with calculated utilization and payment metrics. Extends stg_credit_card_balance.
+    columns:
+      - name: prev_application_id
+        description: ID of previous application
+      - name: user_id
+        description: ID of current application
+      - name: months_balance
+        description: Month of balance relative to application date
+      - name: balance
+        description: Balance amount
+      - name: credit_limit
+        description: Credit card limit
+      - name: total_receivable
+        description: Total receivable
+      - name: principal_receivable
+        description: Principal receivable
+      - name: receivable
+        description: Total receivable
+      - name: atm_drawings
+        description: ATM drawdowns
+      - name: total_drawings
+        description: Current drawdowns
+      - name: other_drawings
+        description: Other drawdowns
+      - name: pos_drawings
+        description: POS drawdowns
+      - name: min_installment
+        description: Minimum installment
+      - name: current_payment
+        description: Current payment
+      - name: total_payment
+        description: Total current payment
+      - name: atm_drawing_count
+        description: Number of ATM drawings
+      - name: total_drawing_count
+        description: Number of drawings
+      - name: other_drawing_count
+        description: Number of other drawings
+      - name: pos_drawing_count
+        description: Number of POS drawings
+      - name: installments_matured
+        description: Number of installments paid
+      - name: contract_status
+        description: Contract status
+      - name: days_past_due
+        description: Days past due
+      - name: days_past_due_tolerance
+        description: Days past due with tolerance
+      - name: stg_processed_at
+        description: Processing timestamp
+      - name: utilization_ratio
+        description: balance / credit_limit
+      - name: payment_to_min_ratio
+        description: current_payment / min_installment
+      - name: drawing_to_limit_ratio
+        description: total_drawings / credit_limit
+      - name: int_credit_card_calculated_at
+        description: Processing timestamp
+
+  - name: int_credit_card_aggregated
+    description: Aggregated credit card statistics per user. One row per user_id with balance, utilization, and payment statistics.
+    columns:
+      - name: user_id
+        description: User ID (group key)
+      - name: total_cc_records
+        description: Count of credit card records
+      - name: num_credit_cards
+        description: Count of distinct prev_application_id
+      - name: avg_balance
+        description: Average balance
+      - name: max_balance
+        description: Maximum balance
+      - name: min_balance
+        description: Minimum balance
+      - name: balance_stddev
+        description: Standard deviation of balance
+      - name: avg_credit_limit
+        description: Average credit limit
+      - name: max_credit_limit
+        description: Maximum credit limit
+      - name: avg_utilization
+        description: Average utilization ratio
+      - name: max_utilization
+        description: Maximum utilization ratio
+      - name: high_utilization_count
+        description: Count of periods with >90% utilization
+      - name: low_utilization_count
+        description: Count of periods with <30% utilization
+      - name: total_atm_drawings
+        description: Sum of ATM drawings
+      - name: total_drawings
+        description: Sum of total drawings
+      - name: avg_drawings
+        description: Average total drawings
+      - name: total_drawing_transactions
+        description: Sum of drawing counts
+      - name: avg_payment
+        description: Average current payment
+      - name: max_payment
+        description: Maximum current payment
+      - name: total_payments
+        description: Sum of total payments
+      - name: avg_total_payment
+        description: Average of total payments
+      - name: avg_payment_to_min_ratio
+        description: Average payment to min ratio
+      - name: overdue_periods
+        description: Count of periods with days_past_due > 0
+      - name: avg_days_past_due
+        description: Average days past due
+      - name: max_days_past_due
+        description: Maximum days past due
+      - name: overdue_rate
+        description: overdue_periods / total_cc_records
+      - name: avg_receivable
+        description: Average total receivable
+      - name: total_receivable
+        description: Sum of total receivable
+      - name: int_credit_card_aggregated_at
+        description: Processing timestamp
+
+  - name: int_bureau_metrics
+    description: Credit Bureau data with calculated debt and overdue ratios. Extends stg_bureau.
+    columns:
+      - name: user_id
+        description: ID of loan in sample (links to application)
+      - name: bureau_credit_id
+        description: ID of previous Credit Bureau credit
+      - name: credit_status
+        description: Status of the Credit Bureau credits
+      - name: credit_currency
+        description: Currency of the Credit Bureau credit
+      - name: credit_type
+        description: Type of Credit Bureau credit
+      - name: days_since_credit
+        description: How many days before application was credit reported
+      - name: days_until_credit_end
+        description: Remaining duration of CB credit
+      - name: days_since_credit_closed
+        description: Days since CB credit ended (for closed)
+      - name: days_since_credit_update
+        description: Days since last update from CB
+      - name: days_overdue
+        description: Days overdue for CB credit
+      - name: max_overdue_amount
+        description: Max overdue amount
+      - name: num_times_prolonged
+        description: Number of times credit prolonged
+      - name: total_credit_amount
+        description: Current credit amount
+      - name: current_debt
+        description: Current debt amount
+      - name: credit_limit
+        description: Credit card limit
+      - name: overdue_amount
+        description: Current overdue amount
+      - name: annuity
+        description: Annuity of CB credit
+      - name: stg_processed_at
+        description: Processing timestamp
+      - name: debt_to_credit_ratio
+        description: current_debt / total_credit_amount
+      - name: overdue_to_credit_ratio
+        description: overdue_amount / total_credit_amount
+      - name: is_currently_overdue
+        description: Flag if days_overdue > 0
+      - name: int_bureau_calculated_at
+        description: Processing timestamp
+
+  - name: int_bureau_aggregated
+    description: Aggregated Credit Bureau statistics per user. One row per user_id with counts, debt totals, and averages.
+    columns:
+      - name: user_id
+        description: User ID (group key)
+      - name: total_bureau_credits
+        description: Count of bureau records
+      - name: num_credit_types
+        description: Count of distinct credit types
+      - name: unique_bureau_credits
+        description: Count of distinct bureau_credit_id
+      - name: active_credits
+        description: Count of active credits
+      - name: closed_credits
+        description: Count of closed credits
+      - name: total_bureau_credit_amount
+        description: Sum of total credit amounts
+      - name: avg_bureau_credit_amount
+        description: Average credit amount
+      - name: max_bureau_credit_amount
+        description: Maximum credit amount
+      - name: min_bureau_credit_amount
+        description: Minimum credit amount
+      - name: total_bureau_debt
+        description: Sum of current debts
+      - name: avg_bureau_debt
+        description: Average current debt
+      - name: avg_annuity
+        description: Average annuity
+      - name: total_annuity
+        description: Sum of annuities
+      - name: total_overdue_amount
+        description: Sum of overdue amounts
+      - name: max_overdue_ever
+        description: Maximum max_overdue_amount
+      - name: avg_days_overdue
+        description: Average days overdue
+      - name: total_prolongations
+        description: Sum of num_times_prolonged
+      - name: avg_days_since_credit
+        description: Average days since credit
+      - name: newest_credit_account_days
+        description: Minimum days_since_credit (most recent)
+      - name: oldest_credit_account_days
+        description: Maximum days_since_credit (oldest)
+      - name: overall_debt_ratio
+        description: total_bureau_debt / total_bureau_credit_amount
+      - name: int_bureau_aggregated_at
+        description: Processing timestamp

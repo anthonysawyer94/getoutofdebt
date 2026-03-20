@@ -339,18 +339,3 @@ sources:
             description: Days past due
           - name: SK_DPD_DEF
             description: Days past due with tolerance
-
-  - name: kaggle_metadata
-    description: Metadata about the Kaggle dataset
-    schema: meta
-    tables:
-      - name: dataset_info
-        description: Information about the source dataset
-        columns:
-          - name: dataset_name
-            tests:
-              - unique
-          - name: source_url
-          - name: rows_count
-          - name: columns_count
-          - name: download_date

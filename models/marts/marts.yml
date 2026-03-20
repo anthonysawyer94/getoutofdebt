@@ -1,0 +1,186 @@
+version: 2
+
+models:
+  - name: fct_loan_application_features
+    description: |
+      Comprehensive loan application feature set for risk modeling. Joins application data 
+      with bureau history, previous applications, and credit card behavior. One row per user.
+    columns:
+      - name: user_id
+        description: User ID
+      - name: target
+        description: Target variable (1 = loan default, 0 = non-default)
+      - name: age_years
+        description: Age in years
+      - name: gender
+        description: Gender
+      - name: owns_car
+        description: Car ownership flag
+      - name: owns_realty
+        description: Property ownership flag
+      - name: num_children
+        description: Number of children
+      - name: num_family_members
+        description: Number of family members
+      - name: income_type
+        description: Income type
+      - name: education_type
+        description: Education level
+      - name: family_status
+        description: Family status
+      - name: housing_type
+        description: Housing type
+      - name: occupation_type
+        description: Occupation type
+      - name: organization_type
+        description: Organization type
+      - name: annual_income
+        description: Annual income
+      - name: credit_amount
+        description: Credit amount
+      - name: loan_annuity
+        description: Loan annuity
+      - name: goods_price
+        description: Goods price
+      - name: contract_type
+        description: Contract type
+      - name: annuity_to_credit_ratio
+        description: loan_annuity / credit_amount
+      - name: credit_to_income_ratio
+        description: credit_amount / annual_income
+      - name: annuity_to_income_ratio
+        description: (loan_annuity * 12) / annual_income
+      - name: region_rating
+        description: Region rating
+      - name: region_live_mismatch
+        description: Flag if permanent address not match contact
+      - name: region_work_mismatch
+        description: Flag if permanent not match work region
+      - name: city_live_mismatch
+        description: Flag if permanent not match contact city
+      - name: city_work_mismatch
+        description: Flag if permanent not match work city
+      - name: years_employed
+        description: Years employed
+      - name: ext_source_1
+        description: External score 1
+      - name: ext_source_2
+        description: External score 2
+      - name: ext_source_3
+        description: External score 3
+      - name: ext_source_avg
+        description: Average external score
+      - name: total_bureau_credits
+        description: Total bureau credit records
+      - name: active_bureau_credits
+        description: Count of active bureau credits
+      - name: closed_bureau_credits
+        description: Count of closed bureau credits
+      - name: total_bureau_credit_amount
+        description: Total bureau credit amount
+      - name: total_bureau_debt
+        description: Total bureau debt
+      - name: bureau_debt_ratio
+        description: total_bureau_debt / total_bureau_credit_amount
+      - name: total_bureau_overdue
+        description: Total bureau overdue amount
+      - name: max_bureau_overdue_ever
+        description: Maximum overdue amount ever recorded
+      - name: bureau_prolongations
+        description: Total number of prolongations
+      - name: total_prev_applications
+        description: Total previous applications
+      - name: prev_approved_count
+        description: Count of previously approved applications
+      - name: prev_refused_count
+        description: Count of previously refused applications
+      - name: prev_approval_rate
+        description: Previous approval rate
+      - name: total_prev_approved_credit
+        description: Total previously approved credit
+      - name: avg_prev_interest_rate
+        description: Average previous interest rate
+      - name: avg_prev_down_payment_rate
+        description: Average previous down payment rate
+      - name: avg_prev_term_months
+        description: Average previous term months
+      - name: prev_insurance_requests
+        description: Previous insurance requests
+      - name: total_cc_records
+        description: Total credit card records
+      - name: avg_cc_balance
+        description: Average credit card balance
+      - name: avg_cc_limit
+        description: Average credit card limit
+      - name: avg_cc_utilization
+        description: Average credit card utilization
+      - name: total_cc_drawings
+        description: Total credit card drawings
+      - name: avg_cc_payment
+        description: Average credit card payment
+      - name: cc_overdue_rate
+        description: Credit card overdue rate
+      - name: cc_max_dpd
+        description: Maximum days past due on credit cards
+      - name: income_burden_ratio
+        description: (loan_annuity * 12) / annual_income
+      - name: active_credit_ratio
+        description: active_bureau_credits / total_bureau_credits
+      - name: credit_card_risk_indicator
+        description: Credit card risk flag
+      - name: external_score_band
+        description: External score categorization (very_low/low/medium/high/very_high)
+      - name: fct_created_at
+        description: Processing timestamp
+
+  - name: fct_loan_risk_assessment
+    description: |
+      Loan risk assessment with derived risk flags and risk level classification.
+      Each flag indicates a potential risk factor. Total risk score and level are calculated.
+    columns:
+      - name: user_id
+        description: User ID
+      - name: loan_defaulted
+        description: Target variable (1 = default, 0 = non-default)
+      - name: high_bureau_credit_count
+        description: Flag if total_bureau_credits > 5
+      - name: high_bureau_debt_ratio
+        description: Flag if bureau_debt_ratio > 0.8
+      - name: has_bureau_overdue_history
+        description: Flag if max_bureau_overdue_ever > 0
+      - name: has_credit_prolongations
+        description: Flag if bureau_prolongations > 0
+      - name: multiple_refusals
+        description: Flag if prev_refused_count > 2
+      - name: low_approval_rate
+        description: Flag if prev_approval_rate < 0.5
+      - name: excessive_insurance
+        description: Flag if prev_insurance_requests > prev_approved_count
+      - name: high_cc_utilization
+        description: Flag if avg_cc_utilization > 0.8
+      - name: cc_overdue_issues
+        description: Flag if cc_overdue_rate > 0.1
+      - name: very_low_external_score
+        description: Flag if ext_source_avg < 0.2
+      - name: low_external_score
+        description: Flag if ext_source_avg < 0.4
+      - name: high_income_burden
+        description: Flag if income_burden_ratio > 0.4
+      - name: very_high_credit_to_income
+        description: Flag if credit_to_income_ratio > 10
+      - name: total_risk_score
+        description: Sum of all risk flags (0-12)
+      - name: risk_level
+        description: Classification based on total_risk_score (low/medium/high)
+      - name: is_young_borrower
+        description: Flag if age < 25
+      - name: is_senior_borrower
+        description: Flag if age > 60
+      - name: low_income
+        description: Flag if annual_income < 50000
+      - name: high_income
+        description: Flag if annual_income > 300000
+      - name: income_burden_ratio
+        description: (loan_annuity * 12) / annual_income
+      - name: fct_created_at
+        description: Processing timestamp
