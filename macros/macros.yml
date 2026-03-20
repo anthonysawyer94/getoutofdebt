@@ -27,11 +27,6 @@ macros:
       - name: table
         type: string
         description: Optional table alias (currently not used)
-    example: |
-      Usage:
-      {{ weighted_avg('revenue', 'units_sold') }}
-      
-      Produces: SUM(revenue * units_sold) / NULLIF(SUM(units_sold), 0)
 
   - name: date_diff
     description: |
@@ -46,13 +41,7 @@ macros:
         description: End date (column or literal)
       - name: date_part
         type: string
-        description: Date part to extract (default: 'day'). Options: day, week, month, year, etc.
-    example: |
-      Usage:
-      {{ date_diff('created_at', 'updated_at', 'day') }}
-      {{ date_diff('order_date', 'ship_date', 'week') }}
-      
-      Produces: DATEDIFF('day', created_at, updated_at)
+        description: "Date part to extract (default: 'day'). Options: day, week, month, year, etc."
 
   - name: percent_of_total
     description: |
@@ -65,12 +54,6 @@ macros:
       - name: group_by_column
         type: string
         description: The column to partition by for the total
-    example: |
-      Usage:
-      {{ percent_of_total('revenue', 'region') }}
-      
-      Produces: revenue / SUM(revenue) OVER (PARTITION BY region)
-      Result: Each row shows its revenue as a fraction of total revenue within that region
 
   - name: rank_within_group
     description: |
@@ -85,10 +68,4 @@ macros:
         description: The column to partition (group) by
       - name: order_by
         type: string
-        description: Sort order - 'DESC' for highest first (default), 'ASC' for lowest first
-    example: |
-      Usage:
-      {{ rank_within_group('sales', 'department') }}
-      {{ rank_within_group('score', 'team', 'ASC') }}
-      
-      Produces: RANK() OVER (PARTITION BY department ORDER BY sales DESC)
+        description: "Sort order - 'DESC' for highest first (default), 'ASC' for lowest first"

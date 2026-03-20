@@ -221,11 +221,11 @@ models:
       - name: insurance_requested
         description: Flag if insurance requested
       - name: annuity_to_credit_ratio
-        description: Derived: annuity / approved_credit
+        description: "Derived: annuity / approved_credit"
       - name: approval_rate
-        description: Derived: approved_credit / requested_amount
+        description: "Derived: approved_credit / requested_amount"
       - name: down_payment_rate_goods
-        description: Derived: down_payment / goods_price
+        description: "Derived: down_payment / goods_price"
       - name: stg_processed_at
         description: Processing timestamp
 

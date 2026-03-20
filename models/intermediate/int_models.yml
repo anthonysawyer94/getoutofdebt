@@ -113,7 +113,7 @@ models:
       - name: credit_to_goods_ratio
         description: credit_amount / goods_price
       - name: annuity_to_income_ratio
-        description: (loan_annuity * 12) / annual_income
+        description: "(loan_annuity * 12) / annual_income"
       - name: int_app_calculated_at
         description: Processing timestamp
 
@@ -269,9 +269,9 @@ models:
       - name: max_utilization
         description: Maximum utilization ratio
       - name: high_utilization_count
-        description: Count of periods with >90% utilization
+        description: "Count of periods with >90% utilization"
       - name: low_utilization_count
-        description: Count of periods with <30% utilization
+        description: "Count of periods with <30% utilization"
       - name: total_atm_drawings
         description: Sum of ATM drawings
       - name: total_drawings
@@ -291,7 +291,7 @@ models:
       - name: avg_payment_to_min_ratio
         description: Average payment to min ratio
       - name: overdue_periods
-        description: Count of periods with days_past_due > 0
+        description: "Count of periods with days_past_due > 0"
       - name: avg_days_past_due
         description: Average days past due
       - name: max_days_past_due
@@ -349,7 +349,7 @@ models:
       - name: overdue_to_credit_ratio
         description: overdue_amount / total_credit_amount
       - name: is_currently_overdue
-        description: Flag if days_overdue > 0
+        description: "Flag if days_overdue > 0"
       - name: int_bureau_calculated_at
         description: Processing timestamp
 

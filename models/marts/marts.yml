@@ -49,7 +49,7 @@ models:
       - name: credit_to_income_ratio
         description: credit_amount / annual_income
       - name: annuity_to_income_ratio
-        description: (loan_annuity * 12) / annual_income
+        description: "(loan_annuity * 12) / annual_income"
       - name: region_rating
         description: Region rating
       - name: region_live_mismatch
@@ -123,13 +123,13 @@ models:
       - name: cc_max_dpd
         description: Maximum days past due on credit cards
       - name: income_burden_ratio
-        description: (loan_annuity * 12) / annual_income
+        description: "(loan_annuity * 12) / annual_income"
       - name: active_credit_ratio
-        description: active_bureau_credits / total_bureau_credits
+        description: "active_bureau_credits / total_bureau_credits"
       - name: credit_card_risk_indicator
         description: Credit card risk flag
       - name: external_score_band
-        description: External score categorization (very_low/low/medium/high/very_high)
+        description: "External score categorization (very_low/low/medium/high/very_high)"
       - name: fct_created_at
         description: Processing timestamp
 
@@ -143,43 +143,43 @@ models:
       - name: loan_defaulted
         description: Target variable (1 = default, 0 = non-default)
       - name: high_bureau_credit_count
-        description: Flag if total_bureau_credits > 5
+        description: "Flag if total_bureau_credits > 5"
       - name: high_bureau_debt_ratio
-        description: Flag if bureau_debt_ratio > 0.8
+        description: "Flag if bureau_debt_ratio > 0.8"
       - name: has_bureau_overdue_history
-        description: Flag if max_bureau_overdue_ever > 0
+        description: "Flag if max_bureau_overdue_ever > 0"
       - name: has_credit_prolongations
-        description: Flag if bureau_prolongations > 0
+        description: "Flag if bureau_prolongations > 0"
       - name: multiple_refusals
-        description: Flag if prev_refused_count > 2
+        description: "Flag if prev_refused_count > 2"
       - name: low_approval_rate
-        description: Flag if prev_approval_rate < 0.5
+        description: "Flag if prev_approval_rate < 0.5"
       - name: excessive_insurance
-        description: Flag if prev_insurance_requests > prev_approved_count
+        description: "Flag if prev_insurance_requests > prev_approved_count"
       - name: high_cc_utilization
-        description: Flag if avg_cc_utilization > 0.8
+        description: "Flag if avg_cc_utilization > 0.8"
       - name: cc_overdue_issues
-        description: Flag if cc_overdue_rate > 0.1
+        description: "Flag if cc_overdue_rate > 0.1"
       - name: very_low_external_score
-        description: Flag if ext_source_avg < 0.2
+        description: "Flag if ext_source_avg < 0.2"
       - name: low_external_score
-        description: Flag if ext_source_avg < 0.4
+        description: "Flag if ext_source_avg < 0.4"
       - name: high_income_burden
-        description: Flag if income_burden_ratio > 0.4
+        description: "Flag if income_burden_ratio > 0.4"
       - name: very_high_credit_to_income
-        description: Flag if credit_to_income_ratio > 10
+        description: "Flag if credit_to_income_ratio > 10"
       - name: total_risk_score
-        description: Sum of all risk flags (0-12)
+        description: "Sum of all risk flags (0-12)"
       - name: risk_level
-        description: Classification based on total_risk_score (low/medium/high)
+        description: "Classification based on total_risk_score (low/medium/high)"
       - name: is_young_borrower
-        description: Flag if age < 25
+        description: "Flag if age < 25"
       - name: is_senior_borrower
-        description: Flag if age > 60
+        description: "Flag if age > 60"
       - name: low_income
-        description: Flag if annual_income < 50000
+        description: "Flag if annual_income < 50000"
       - name: high_income
-        description: Flag if annual_income > 300000
+        description: "Flag if annual_income > 300000"
       - name: income_burden_ratio
         description: (loan_annuity * 12) / annual_income
       - name: fct_created_at
