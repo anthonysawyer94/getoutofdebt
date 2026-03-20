@@ -1,0 +1,284 @@
+version: 2
+
+models:
+  - name: stg_applications
+    description: |
+      Cleaned and renamed application data from raw source. One row per loan application.
+      Standardizes column names and handles null values (e.g., magic number 365243 for unemployed).
+    columns:
+      - name: user_id
+        description: ID of loan in sample (renamed from SK_ID_CURR)
+      - name: target
+        description: Target variable (1 = loan default, 0 = non-default)
+      - name: contract_type
+        description: Cash or revolving loans
+      - name: gender
+        description: Gender of the client
+      - name: owns_car
+        description: Whether client owns a car
+      - name: owns_realty
+        description: Whether client owns house/apartment
+      - name: num_children
+        description: Number of children
+      - name: num_family_members
+        description: Number of family members
+      - name: annual_income
+        description: Income of the client
+      - name: credit_amount
+        description: Credit amount of the loan
+      - name: loan_annuity
+        description: Loan annuity
+      - name: goods_price
+        description: Price of goods for which loan is given
+      - name: income_type
+        description: Client's income type
+      - name: education_type
+        description: Education level
+      - name: family_status
+        description: Family status
+      - name: housing_type
+        description: Housing situation
+      - name: age_years
+        description: Calculated age in years (abs(DAYS_BIRTH) / 365.25)
+      - name: years_employed
+        description: Calculated years employed (NULL for unemployed, magic number 365243 handled)
+      - name: days_since_registration
+        description: Days since registration
+      - name: days_since_id_publish
+        description: Days since ID published
+      - name: has_mobile
+        description: Did client provide mobile phone
+      - name: has_work_phone
+        description: Did client provide work phone
+      - name: has_home_phone
+        description: Did client provide home phone
+      - name: mobile_reachable
+        description: Is mobile phone reachable
+      - name: has_email
+        description: Did client provide email
+      - name: occupation_type
+        description: Occupation type
+      - name: region_rating
+        description: Region rating by Home Credit
+      - name: region_rating_with_city
+        description: Region rating with city
+      - name: region_live_mismatch
+        description: Flag if permanent address not match contact region
+      - name: region_work_mismatch
+        description: Flag if permanent not match work region
+      - name: live_work_mismatch
+        description: Flag if contact not match work region
+      - name: city_live_mismatch
+        description: Flag if permanent not match contact city
+      - name: city_work_mismatch
+        description: Flag if permanent not match work city
+      - name: city_work_live_mismatch
+        description: Flag if contact not match work city
+      - name: organization_type
+        description: Type of organization
+      - name: ext_source_1
+        description: External score 1 (normalized, try_cast for null handling)
+      - name: ext_source_2
+        description: External score 2 (normalized, try_cast for null handling)
+      - name: ext_source_3
+        description: External score 3 (normalized, try_cast for null handling)
+      - name: application_weekday
+        description: Day of week application was started
+      - name: application_hour
+        description: Hour of day application was started
+      - name: bureau_inquiries_hour
+        description: Requests to credit bureau 1 hour before (coalesced to 0)
+      - name: bureau_inquiries_day
+        description: Requests to credit bureau 1 day before (coalesced to 0)
+      - name: bureau_inquiries_week
+        description: Requests to credit bureau 1 week before (coalesced to 0)
+      - name: bureau_inquiries_month
+        description: Requests to credit bureau 1 month before (coalesced to 0)
+      - name: bureau_inquiries_quarter
+        description: Requests to credit bureau 3 months before (coalesced to 0)
+      - name: bureau_inquiries_year
+        description: Requests to credit bureau 1 year before (coalesced to 0)
+      - name: doc_3_provided
+        description: Flag if document 3 provided
+      - name: doc_6_provided
+        description: Flag if document 6 provided
+      - name: doc_8_provided
+        description: Flag if document 8 provided
+      - name: stg_processed_at
+        description: Processing timestamp
+
+  - name: stg_bureau
+    description: |
+      Credit Bureau data with standardized column names. Contains previous credits 
+      from other institutions reported to Credit Bureau. One row per previous credit.
+    columns:
+      - name: user_id
+        description: ID of loan in sample (renamed from SK_ID_CURR)
+      - name: bureau_credit_id
+        description: ID of previous Credit Bureau credit (renamed from SK_ID_BUREAU)
+      - name: credit_status
+        description: Status of the Credit Bureau credit (Active/Closed/Bad Debt/Sold)
+      - name: credit_currency
+        description: Currency of the Credit Bureau credit
+      - name: credit_type
+        description: Type of Credit Bureau credit
+      - name: days_since_credit
+        description: How many days before application was credit reported (abs value)
+      - name: days_until_credit_end
+        description: Remaining duration of CB credit
+      - name: days_since_credit_closed
+        description: Days since CB credit ended (for closed, abs value)
+      - name: days_since_credit_update
+        description: Days since last update from CB
+      - name: days_overdue
+        description: Days overdue for CB credit
+      - name: max_overdue_amount
+        description: Max overdue amount recorded
+      - name: num_times_prolonged
+        description: Number of times credit prolonged
+      - name: total_credit_amount
+        description: Current credit amount
+      - name: current_debt
+        description: Current debt amount
+      - name: credit_limit
+        description: Credit card limit
+      - name: overdue_amount
+        description: Current overdue amount
+      - name: annuity
+        description: Annuity of CB credit
+      - name: stg_processed_at
+        description: Processing timestamp
+
+  - name: stg_previous_applications
+    description: |
+      Previous Home Credit loan applications with standardized column names.
+      One row per previous application. May have multiple per user_id.
+    columns:
+      - name: prev_application_id
+        description: ID of previous application (renamed from SK_ID_PREV)
+      - name: user_id
+        description: ID of current application (links to application)
+      - name: contract_type
+        description: Contract type of previous application
+      - name: product_type
+        description: Product type (x-sell/walk-in)
+      - name: annuity
+        description: Annuity of previous application
+      - name: requested_amount
+        description: Amount requested
+      - name: approved_credit
+        description: Credit amount approved
+      - name: down_payment
+        description: Down payment
+      - name: goods_price
+        description: Goods price
+      - name: contract_status
+        description: Contract status (Approved/Refused/Canceled/Unused)
+      - name: is_last_application
+        description: Flag if last application for contract
+      - name: is_last_in_day
+        description: Flag if last application in day
+      - name: down_payment_rate
+        description: Down payment rate
+      - name: interest_rate_primary
+        description: Interest rate primary (try_cast for null handling)
+      - name: interest_rate_privileged
+        description: Interest rate privileged (try_cast for null handling)
+      - name: loan_purpose
+        description: Purpose of cash loan
+      - name: goods_category
+        description: Goods category
+      - name: client_type
+        description: Client type (New/Refresh/Repeater/Worker)
+      - name: accompanying_type
+        description: Who accompanied client
+      - name: portfolio
+        description: Portfolio (POS/Cash/Annuity/XNA)
+      - name: seller_industry
+        description: Seller industry
+      - name: seller_area
+        description: Seller place area
+      - name: product_combination
+        description: Product combination
+      - name: application_weekday
+        description: Day of week of application
+      - name: application_hour
+        description: Hour of application
+      - name: days_since_decision
+        description: Days since decision
+      - name: term_months
+        description: Term of previous credit
+      - name: days_first_drawing
+        description: Days from first drawing
+      - name: days_first_due
+        description: Days from first due
+      - name: days_last_due_first_version
+        description: Days from last due (first version)
+      - name: days_last_due
+        description: Days from last due
+      - name: days_termination
+        description: Days from termination
+      - name: insurance_requested
+        description: Flag if insurance requested
+      - name: annuity_to_credit_ratio
+        description: Derived: annuity / approved_credit
+      - name: approval_rate
+        description: Derived: approved_credit / requested_amount
+      - name: down_payment_rate_goods
+        description: Derived: down_payment / goods_price
+      - name: stg_processed_at
+        description: Processing timestamp
+
+  - name: stg_credit_card_balance
+    description: |
+      Monthly credit card balance data with standardized column names.
+      One row per credit card per month. Multiple rows per user.
+    columns:
+      - name: prev_application_id
+        description: ID of previous application
+      - name: user_id
+        description: ID of current application
+      - name: months_balance
+        description: Month of balance relative to application date (negative = past)
+      - name: balance
+        description: Balance amount
+      - name: credit_limit
+        description: Credit card limit
+      - name: total_receivable
+        description: Total receivable
+      - name: principal_receivable
+        description: Principal receivable
+      - name: receivable
+        description: Total receivable
+      - name: atm_drawings
+        description: ATM drawdowns
+      - name: total_drawings
+        description: Current drawdowns
+      - name: other_drawings
+        description: Other drawdowns
+      - name: pos_drawings
+        description: POS drawdowns
+      - name: min_installment
+        description: Minimum installment
+      - name: current_payment
+        description: Current payment
+      - name: total_payment
+        description: Total current payment
+      - name: atm_drawing_count
+        description: Number of ATM drawings
+      - name: total_drawing_count
+        description: Number of drawings
+      - name: other_drawing_count
+        description: Number of other drawings
+      - name: pos_drawing_count
+        description: Number of POS drawings
+      - name: installments_matured
+        description: Number of installments paid
+      - name: contract_status
+        description: Contract status
+      - name: days_past_due
+        description: Days past due
+      - name: days_past_due_tolerance
+        description: Days past due with tolerance
+      - name: stg_processed_at
+        description: Processing timestamp
