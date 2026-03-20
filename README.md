@@ -50,13 +50,43 @@ Data is sourced from the [Home Credit Default Risk](https://www.kaggle.com/compe
    pip install dbt-snowflake
    ```
 
-2. **Install dbt packages**
+2. **Database Configuration**
+
+   ```bash
+   #Create directory (if doesn't exist)
+   mkdir -p ~/.dbt
+
+   #Create/Edit the file
+   nano ~/.dbt/profiles.yml
+   ```
+
+   - Copy and paste following template: (replace bracketed values with your Snowflake credentials)
+
+   ⚠️ Security Warning: Never commit your profiles.yml or any file containing passwords to a public GitHub repository. This file should remain in your local ~/.dbt/ folder.
+
+   ```yaml
+   home_credit_risk:
+     outputs:
+       dev:
+         type: snowflake
+         account: [your_account_locator]
+         user: [your_username]
+         password: [your_password]
+         role: [ACCOUNTADMIN or your specific role]
+         database: HOME_CREDIT_DEV
+         warehouse: [your_warehouse_name]
+         schema: L1_LANDING
+         threads: 1
+     target: dev
+   ```
+
+3. **Install dbt packages**
 
    ```bash
    dbt deps
    ```
 
-3. **Load data to Snowflake**
+4. **Load data to Snowflake**
    - Download CSVs from Kaggle
    - Upload to Snowflake via SnowSQL or Snowflake UI
    - Create tables matching the schema
@@ -141,21 +171,11 @@ dbt docs generate
 dbt docs serve
 ```
 
-## Environment Variables
-
-| Variable             | Required | Description                    |
-| -------------------- | -------- | ------------------------------ |
-| `SNOWFLAKE_ACCOUNT`  | Yes      | Snowflake account identifier   |
-| `SNOWFLAKE_USER`     | Yes      | Snowflake username             |
-| `SNOWFLAKE_PASSWORD` | Yes      | Snowflake password             |
-| `SNOWFLAKE_ROLE`     | No       | Role to use (default: ANALYST) |
-
 ## Project Structure
 
 ```
 .
 ├── dbt_project.yml
-├── profiles.yml
 ├── packages.yml
 ├── models/
 │   ├── staging/
@@ -169,6 +189,7 @@ dbt docs serve
 │   └── assert_*.sql
 ├── macros/
 │   └── analytics_helpers.sql
+|   └── generate_schema_name.sql
 └── README.md
 ```
 
