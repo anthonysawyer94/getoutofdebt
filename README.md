@@ -122,6 +122,7 @@ dbt test --store-failures
 |-------|-------------|
 | `fct_loan_application_features` | 100+ features from all sources |
 | `fct_loan_risk_assessment` | 12 risk indicators + risk level |
+| `fct_loan_decision_guide` | Financial wellness scores + actionable recommendations for advisors |
 
 ## Key Features
 
@@ -130,6 +131,7 @@ dbt test --store-failures
 - 100+ engineered features from 4 source tables
 - 12 risk indicators for loan assessment
 - External score integration (EXT_SOURCE_1/2/3)
+- Decision guide with financial wellness scores and actionable recommendations
 
 ## Testing
 

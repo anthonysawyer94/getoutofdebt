@@ -1,10 +1,10 @@
 # dbt ignore file
 dbt_packages/
 logs/
+target/
 dbt_modules/
 
 # Security and credentials
-target/
 .env
 *.pem
 .user.yml

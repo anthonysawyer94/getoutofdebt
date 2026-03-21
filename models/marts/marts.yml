@@ -181,6 +181,64 @@ models:
       - name: high_income
         description: "Flag if annual_income > 300000"
       - name: income_burden_ratio
-        description: (loan_annuity * 12) / annual_income
+        description: "(loan_annuity * 12) / annual_income"
+      - name: fct_created_at
+        description: Processing timestamp
+
+  - name: fct_loan_decision_guide
+    description: |
+      Decision support table for lenders and financial advisors. Provides actionable recommendations
+      based on financial health assessment. One row per user with wellness scores and guidance.
+    columns:
+      - name: user_id
+        description: User ID
+      - name: target
+        description: Target variable (1 = default, 0 = non-default)
+      - name: age_years
+        description: Age in years
+      - name: gender
+        description: Gender
+      - name: annual_income
+        description: Annual income
+      - name: credit_amount
+        description: Credit amount
+      - name: loan_annuity
+        description: Loan annuity
+      - name: goods_price
+        description: Goods price
+      - name: contract_type
+        description: Contract type
+      - name: annuity_to_income_ratio
+        description: "(loan_annuity * 12) / annual_income"
+      - name: credit_to_income_ratio
+        description: credit_amount / annual_income
+      - name: ext_source_avg
+        description: Average external score
+      - name: total_risk_score
+        description: "Sum of all risk flags (0-12)"
+      - name: risk_level
+        description: "Classification based on total_risk_score (low/medium/high)"
+      - name: income_burden_ratio
+        description: "(loan_annuity * 12) / annual_income"
+      - name: income_tier
+        description: "Income classification: low/medium/high"
+      - name: debt_burden_level
+        description: "Debt burden: affordable/moderate/stretched/overextended"
+      - name: creditworthiness_tier
+        description: "Creditworthiness: strong/moderate/weak/very_weak"
+      - name: bureau_health_status
+        description: "Bureau history: no_history/limited_history/healthy_bureau/moderate_bureau/concerning_bureau"
+      - name: payment_history_status
+        description: "Payment status: clean_history/had_overdue/has_overdue"
+      - name: financial_wellness_score
+        description: "Overall financial wellness score (0-100)"
+      - name: recommended_max_loan
+        description: Calculated maximum recommended loan based on income and debt
+      - name: affordable_monthly_payment
+        description: Maximum affordable monthly payment (35% of monthly income)
+      - name: primary_recommendation
+        description: Main actionable recommendation based on risk profile
+      - name: secondary_recommendation
+        description: Secondary actionable recommendation
       - name: fct_created_at
         description: Processing timestamp
